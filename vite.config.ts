@@ -1,16 +1,15 @@
 import { defineConfig } from 'vite';
-import path from 'path';
 
 export default defineConfig({
   resolve: {
     alias: {
-      '@core': path.resolve(__dirname, 'src/core'),
-      '@chapters': path.resolve(__dirname, 'src/chapters'),
-      '@routes': path.resolve(__dirname, 'src/routes'),
-      '@audio': path.resolve(__dirname, 'src/audio'),
-      '@ui': path.resolve(__dirname, 'src/ui'),
-      '@utils': path.resolve(__dirname, 'src/utils'),
-      '@types-ns': path.resolve(__dirname, 'src/types'),
+      '@core': `${import.meta.dirname}/src/core`,
+      '@chapters': `${import.meta.dirname}/src/chapters`,
+      '@routes': `${import.meta.dirname}/src/routes`,
+      '@audio': `${import.meta.dirname}/src/audio`,
+      '@ui': `${import.meta.dirname}/src/ui`,
+      '@utils': `${import.meta.dirname}/src/utils`,
+      '@types-ns': `${import.meta.dirname}/src/types`,
     },
   },
   build: {

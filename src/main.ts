@@ -19,15 +19,19 @@ import { initQuality } from './core/quality.ts';
 import { initRenderer, renderFrame } from './core/renderer.ts';
 import { initScroll, scrollState } from './core/scroll.ts';
 import { initDebug, updateDebug } from './core/debug.ts';
+import { initAudio, enableAudio, disableAudio, updateAudioVelocity } from './core/audio.ts';
 
-// ─── Chapters ────────────────────────────────────────────────────────────────
+// ─── Chapters & Lap Orchestrator ─────────────────────────────────────────────
 import { initChapter01, updateChapter01 } from './chapters/ch01-start.ts';
+import { initLapController, updateLapController } from './core/lap-controller.ts';
 
-// ─── Utils ───────────────────────────────────────────────────────────────────
+// ─── UI & HUD ────────────────────────────────────────────────────────────────
 import { initLoader } from './ui/loader.ts';
 import { initCursor } from './ui/cursor.ts';
 import { initAccessibility } from './ui/accessibility.ts';
 import { initEasterEggs } from './ui/easter-eggs.ts';
+import { initHUD } from './ui/hud.ts';
+import { initNav } from './ui/nav.ts';
 
 // ─── Boot sequence ───────────────────────────────────────────────────────────
 async function boot(): Promise<void> {
@@ -47,25 +51,35 @@ async function boot(): Promise<void> {
   // 4. Init scroll (Lenis + ScrollTrigger)
   initScroll();
 
-  // 5. Debug overlay
+  // 5. Audio system
+  initAudio();
+  window.addEventListener('sound:enable', () => { enableAudio(); });
+  window.addEventListener('sound:disable', () => { disableAudio(); });
+
+  // 6. Debug overlay
   initDebug();
 
-  // 6. Accessibility (reduced-motion detection, skip link)
+  // 7. Accessibility (reduced-motion detection, skip link)
   initAccessibility();
 
-  // 7. Custom cursor
+  // 8. Custom cursor
   initCursor();
 
-  // 8. Show loader (ASCII boot terminal + 5-light gantry)
+  // 9. Show loader (ASCII boot terminal + 5-light gantry)
   await initLoader();
 
-  // 9. Init hero chapter (M1)
+  // 10. Nav & Telemetry HUD
+  initNav();
+  initHUD();
+
+  // 11. Init 3D Lap Controller & Chapter 01
+  initLapController();
   initChapter01();
 
-  // 10. Easter eggs
+  // 12. Easter eggs
   initEasterEggs();
 
-  // 11. Begin render loop
+  // 13. Begin render loop
   requestAnimationFrame(loop);
 }
 
@@ -74,7 +88,13 @@ function loop(): void {
   requestAnimationFrame(loop);
   const dt = renderFrame();
 
-  // Chapter updates
+  // Audio throttle updates based on scroll velocity
+  updateAudioVelocity(scrollState.velocity);
+
+  // Lap controller & 3D track/car traversal
+  updateLapController(dt, scrollState.progress, scrollState.velocity);
+
+  // Chapter 01 updates
   updateChapter01(dt, scrollState.velocity);
 
   // Debug overlay

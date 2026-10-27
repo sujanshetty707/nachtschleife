@@ -110,17 +110,34 @@ export function initRenderer(canvas: HTMLCanvasElement): void {
     adaptationRate: 2.0,
   });
 
-  // DoF (only on high/ultra)
   if (qualityConfig.dofEnabled) {
     dofEffect = new DepthOfFieldEffect(camera, {
       focusDistance: 0.0,
       focalLength: 0.05,
       bokehScale: 3.0,
     });
-    composer.addPass(new EffectPass(camera, smaaEffect, bloomEffect, dofEffect, chromaticAberrationEffect, vignetteEffect, noiseEffect, toneMappingEffect));
-  } else {
-    composer.addPass(new EffectPass(camera, smaaEffect, bloomEffect, chromaticAberrationEffect, vignetteEffect, noiseEffect, toneMappingEffect));
+    composer.addPass(new EffectPass(camera, dofEffect));
   }
+
+  // Bloom is a convolution effect and requires its own dedicated EffectPass
+  const bloomPass = new EffectPass(camera, bloomEffect);
+  composer.addPass(bloomPass);
+
+  // Chromatic aberration operates across offset color channels and requires its own EffectPass
+  const chromaticPass = new EffectPass(camera, chromaticAberrationEffect);
+  composer.addPass(chromaticPass);
+
+  // Non-convolution color & distortion effects
+  const mainEffectPass = new EffectPass(
+    camera,
+    vignetteEffect,
+    noiseEffect,
+    toneMappingEffect
+  );
+  composer.addPass(mainEffectPass);
+
+  const smaaPass = new EffectPass(camera, smaaEffect);
+  composer.addPass(smaaPass);
 
   // ─── Resize handler ─────────────────────────────────────────────────────
   const onResize = () => {

@@ -8,19 +8,19 @@
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
-    "exactOptionalPropertyTypes": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "allowImportingTsExtensions": true,
     "noEmit": true,
     "paths": {
-      "@core/*": ["src/core/*"],
-      "@chapters/*": ["src/chapters/*"],
-      "@routes/*": ["src/routes/*"],
-      "@audio/*": ["src/audio/*"],
-      "@ui/*": ["src/ui/*"],
-      "@utils/*": ["src/utils/*"],
-      "@types-ns/*": ["src/types/*"]
+      "*": ["./*"],
+      "@core/*": ["./src/core/*"],
+      "@chapters/*": ["./src/chapters/*"],
+      "@routes/*": ["./src/routes/*"],
+      "@audio/*": ["./src/audio/*"],
+      "@ui/*": ["./src/ui/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@types-ns/*": ["./src/types/*"]
     }
   },
   "include": ["src"]

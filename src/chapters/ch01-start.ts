@@ -220,9 +220,11 @@ function updateRain(dt: number): void {
   const count = pos.count;
 
   for (let i = 0; i < count; i++) {
-    arr[i * 3 + 1] -= (velArr[i] ?? 10) * dt;
-    if ((arr[i * 3 + 1] ?? 0) < -0.5) {
-      arr[i * 3 + 1] = 20;
+    const yIdx = i * 3 + 1;
+    const v = velArr[i] ?? 10;
+    arr[yIdx] = (arr[yIdx] ?? 0) - v * dt;
+    if ((arr[yIdx] ?? 0) < -0.5) {
+      arr[yIdx] = 20;
     }
   }
   pos.needsUpdate = true;
