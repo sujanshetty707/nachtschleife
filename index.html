@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en" data-flag="green">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#050508" />
+
+  <!-- SEO -->
+  <title>NACHTSCHLEIFE — One endless night lap of the Nordschleife</title>
+  <meta name="description" content="A scroll-driven 3D experience: one endless night lap of the Nürburgring Nordschleife in the rain. Where endurance racing meets code." />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="NACHTSCHLEIFE" />
+  <meta property="og:description" content="One endless night lap of the Nordschleife in the rain. Scrolling is the lap." />
+  <meta property="og:url" content="/" />
+  <meta property="og:image" content="/og-image.jpg" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="NACHTSCHLEIFE" />
+  <meta name="twitter:description" content="One endless night lap of the Nordschleife in the rain." />
+
+  <!-- Favicon: updated dynamically per flag status -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" id="favicon" />
+
+  <!--
+    ██████████████████████████████████████████
+    █                                        █
+    █   N A C H T S C H L E I F E           █
+    █   One lap. All night. Don't stop.      █
+    █                                        █
+    █   Built by an agent that doesn't       █
+    █   sleep either.                        █
+    █                                        █
+    █   Lap time target: under 5:20          █
+    █   Current best: loading...             █
+    █                                        █
+    ██████████████████████████████████████████
+    
+    Easter egg 1/10: You found the source comment.
+    If you're reading this, you understand the loop.
+    
+    Hint: try the Konami code on the hero screen.
+    ↑ ↑ ↓ ↓ ← → ← → B A
+  -->
+
+  <!-- Critical font preloads: Big Shoulders Display (display) + Chakra Petch (UI) -->
+  <link rel="preload" href="/fonts/big-shoulders-display-variable.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/chakra-petch-400.woff2" as="font" type="font/woff2" crossorigin />
+
+  <!-- Main entry -->
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <!-- Accessibility: skip to main content -->
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <!-- Persistent WebGL canvas — lives outside Swup container -->
+  <canvas id="gl-canvas" aria-hidden="true"></canvas>
+
+  <!-- Reduced-motion / accessibility overlay -->
+  <div id="a11y-bar" role="region" aria-label="Accessibility controls" hidden>
+    <button id="btn-reduce-motion" type="button" aria-pressed="false">
+      <span aria-hidden="true">⟳</span> Reduce effects
+    </button>
+    <button id="btn-sound-toggle" type="button" aria-pressed="false">
+      <span aria-hidden="true">🔇</span> Sound
+    </button>
+  </div>
+
+  <!-- Custom cursor (hidden on touch) -->
+  <div id="cursor" aria-hidden="true">
+    <div id="cursor-dot"></div>
+    <div id="cursor-ring"></div>
+  </div>
+
+  <!-- Debug overlay (only shown when ?debug in URL) -->
+  <div id="debug-overlay" aria-hidden="true" hidden>
+    <span id="dbg-fps">-- fps</span>
+    <span id="dbg-calls">-- calls</span>
+    <span id="dbg-tier">tier: --</span>
+    <span id="dbg-chapter">ch: --</span>
+  </div>
+
+  <!-- Main Swup-managed content area -->
+  <div id="swup">
+    <main id="main-content" data-swup-transition="">
+      <!-- Route content injected here by router -->
+      <div id="loader-screen" role="status" aria-live="polite" aria-label="Loading NACHTSCHLEIFE">
+        <pre id="ascii-boot" aria-hidden="true"></pre>
+        <div id="start-lights" aria-hidden="true">
+          <span class="light" data-index="0"></span>
+          <span class="light" data-index="1"></span>
+          <span class="light" data-index="2"></span>
+          <span class="light" data-index="3"></span>
+          <span class="light" data-index="4"></span>
+        </div>
+        <div id="boot-log" aria-live="polite"></div>
+        <div id="sound-prompt" hidden>
+          <button id="btn-sound-on" type="button">Enable sound</button>
+          <button id="btn-sound-off" type="button">Continue silent</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- WebGL fallback (if WebGL not available) -->
+  <noscript>
+    <div id="no-webgl" style="background:#050508;color:#e0e0e0;font-family:monospace;padding:2rem;">
+      <h1>NACHTSCHLEIFE</h1>
+      <p>One endless night lap of the Nürburgring Nordschleife in the rain.</p>
+      <p>This experience requires a browser with WebGL2 and JavaScript enabled.</p>
+    </div>
+  </noscript>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

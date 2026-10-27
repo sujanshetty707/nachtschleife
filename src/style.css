@@ -1,0 +1,359 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   NACHTSCHLEIFE — Global CSS
+   Design tokens → reset → layout → typography → utility → component shells
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* ─── Design Tokens ─────────────────────────────────────────────────────── */
+:root {
+  /* Core palette — night race */
+  --clr-void:        #050508;   /* absolute black */
+  --clr-asphalt:     #0c0c12;   /* dark surface */
+  --clr-carbon:      #14141e;   /* panel bg */
+  --clr-graphite:    #1e1e2e;   /* elevated surface */
+  --clr-smoke:       #2a2a3d;   /* borders */
+  --clr-mist:        #444466;   /* subdued text */
+  --clr-ice:         #8888bb;   /* secondary text */
+  --clr-silver:      #c8c8d8;   /* primary text */
+  --clr-white:       #f0f0f8;   /* maximum brightness */
+
+  /* Accent — racing colours */
+  --clr-red:         #e8002d;   /* red flag / danger */
+  --clr-amber:       #ff8c00;   /* marshall amber */
+  --clr-yellow:      #f0c040;   /* safety car / yellow flag */
+  --clr-green:       #00d26a;   /* go / success */
+  --clr-blue:        #0090ff;   /* info / telemetry */
+  --clr-pit:         #6644ff;   /* pit lane accent */
+
+  /* Headlight colours */
+  --clr-led-white:   #e8f0ff;   /* cool LED */
+  --clr-halogen:     #ffd060;   /* warm halogen rim */
+  --clr-brake-glow:  #ff4400;   /* brake disc orange */
+
+  /* Typography */
+  --font-display:    'Big Shoulders Display Variable', 'Big Shoulders Display', sans-serif;
+  --font-rain:       'Climate Crisis Variable', 'Climate Crisis', sans-serif;
+  --font-neon:       'Monoton', cursive;
+  --font-boot:       'VT323', monospace;
+  --font-telemetry:  'Martian Mono Variable', 'Martian Mono', monospace;
+  --font-code:       'JetBrains Mono', monospace;
+  --font-quote:      'Fraunces Variable', 'Fraunces', serif;
+  --font-archive:    'Special Elite', cursive;
+  --font-pitboard:   'Permanent Marker', cursive;
+  --font-stencil:    'Saira Stencil One', sans-serif;
+  --font-ui:         'Chakra Petch', sans-serif;
+  --font-body:       'Barlow Semi Condensed', sans-serif;
+
+  /* Type scale (modular scale 1.25) */
+  --text-xs:   0.64rem;
+  --text-sm:   0.8rem;
+  --text-base: 1rem;
+  --text-md:   1.25rem;
+  --text-lg:   1.563rem;
+  --text-xl:   1.953rem;
+  --text-2xl:  2.441rem;
+  --text-3xl:  3.052rem;
+  --text-4xl:  3.815rem;
+  --text-5xl:  4.768rem;
+  --text-hero: clamp(4rem, 12vw, 10rem);
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+
+  /* Radii */
+  --radius-sm: 2px;
+  --radius-md: 6px;
+  --radius-lg: 12px;
+
+  /* Z-index layers */
+  --z-canvas:   0;
+  --z-content: 10;
+  --z-overlay: 20;
+  --z-debug:   30;
+  --z-cursor:  40;
+
+  /* Transitions */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-expo:  cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ─── Reset ─────────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: auto; /* Lenis handles smooth scroll */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--clr-void);
+  color: var(--clr-silver);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  overflow-x: hidden;
+  cursor: none; /* Custom cursor active */
+}
+
+/* Scroll height — drives the lap. 1200vh = space for all 12 chapters */
+#swup {
+  min-height: 1200vh;
+}
+
+/* ─── Canvas ────────────────────────────────────────────────────────────── */
+#gl-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: var(--z-canvas);
+  display: block;
+}
+
+/* ─── Skip link ─────────────────────────────────────────────────────────── */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: var(--space-4);
+  padding: var(--space-2) var(--space-4);
+  background: var(--clr-led-white);
+  color: var(--clr-void);
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: var(--radius-md);
+  z-index: 9999;
+  transition: top 0.2s;
+}
+.skip-link:focus {
+  top: var(--space-4);
+}
+
+/* ─── Custom cursor ─────────────────────────────────────────────────────── */
+#cursor {
+  position: fixed;
+  pointer-events: none;
+  z-index: var(--z-cursor);
+  mix-blend-mode: difference;
+}
+
+#cursor-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--clr-white);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s var(--ease-spring), width 0.2s, height 0.2s;
+}
+
+#cursor-ring {
+  position: absolute;
+  top: 0; left: 0;
+  width: 32px;
+  height: 32px;
+  border: 1.5px solid var(--clr-white);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: transform 0.25s var(--ease-out-expo), width 0.3s, height 0.3s, opacity 0.3s;
+  opacity: 0.6;
+}
+
+body:has(a:hover, button:hover) #cursor-ring {
+  width: 48px;
+  height: 48px;
+  opacity: 0.9;
+}
+
+@media (pointer: coarse) {
+  #cursor { display: none; }
+  body { cursor: auto; }
+}
+
+/* ─── Accessibility bar ─────────────────────────────────────────────────── */
+#a11y-bar {
+  position: fixed;
+  top: var(--space-4);
+  right: var(--space-4);
+  display: flex;
+  gap: var(--space-2);
+  z-index: var(--z-overlay);
+}
+
+#a11y-bar button {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  padding: var(--space-1) var(--space-3);
+  background: rgba(255,255,255,0.08);
+  color: var(--clr-ice);
+  border: 1px solid var(--clr-smoke);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+#a11y-bar button:hover {
+  background: rgba(255,255,255,0.15);
+  color: var(--clr-white);
+  border-color: var(--clr-mist);
+}
+
+#a11y-bar button[aria-pressed="true"] {
+  background: var(--clr-green);
+  color: var(--clr-void);
+  border-color: var(--clr-green);
+}
+
+/* ─── Debug overlay ─────────────────────────────────────────────────────── */
+#debug-overlay {
+  position: fixed;
+  bottom: var(--space-4);
+  left: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  font-family: var(--font-code);
+  font-size: var(--text-xs);
+  color: var(--clr-green);
+  background: rgba(0,0,0,0.7);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(0,210,106,0.3);
+  z-index: var(--z-debug);
+  pointer-events: none;
+  backdrop-filter: blur(4px);
+}
+
+/* ─── Loader / Boot screen ──────────────────────────────────────────────── */
+#loader-screen {
+  position: fixed;
+  inset: 0;
+  background: var(--clr-void);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+  z-index: var(--z-overlay);
+  font-family: var(--font-boot);
+}
+
+#ascii-boot {
+  font-size: clamp(0.4rem, 1vw, 0.7rem);
+  line-height: 1.1;
+  color: var(--clr-green);
+  text-shadow: 0 0 12px rgba(0,210,106,0.5);
+  user-select: none;
+}
+
+#boot-log {
+  font-family: var(--font-boot);
+  font-size: var(--text-md);
+  color: var(--clr-green);
+  text-align: left;
+  min-height: 3rem;
+  letter-spacing: 0.05em;
+}
+
+/* 5-light start gantry */
+#start-lights {
+  display: flex;
+  gap: var(--space-4);
+}
+
+.light {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--clr-smoke);
+  border: 2px solid var(--clr-graphite);
+  box-shadow: 0 0 0 rgba(232, 0, 45, 0);
+  transition: background 0.1s, box-shadow 0.1s;
+}
+
+.light.on {
+  background: var(--clr-red);
+  box-shadow: 0 0 20px var(--clr-red), 0 0 40px rgba(232, 0, 45, 0.4);
+}
+
+#sound-prompt {
+  display: flex;
+  gap: var(--space-4);
+  font-family: var(--font-ui);
+}
+
+#sound-prompt button {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  padding: var(--space-2) var(--space-6);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  border: 1px solid var(--clr-smoke);
+  transition: all 0.2s;
+}
+
+#btn-sound-on {
+  background: var(--clr-green);
+  color: var(--clr-void);
+  border-color: var(--clr-green);
+}
+
+#btn-sound-off {
+  background: transparent;
+  color: var(--clr-mist);
+}
+
+/* ─── Reduced motion overrides ──────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.reduced-motion * {
+  animation: none !important;
+  transition: opacity 0.3s ease !important;
+}
+
+/* ─── Focus rings ───────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--clr-green);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/* ─── Scrollbar ─────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--clr-void); }
+::-webkit-scrollbar-thumb { background: var(--clr-smoke); border-radius: 2px; }
+
+/* ─── No WebGL fallback ─────────────────────────────────────────────────── */
+#no-webgl {
+  position: fixed;
+  inset: 0;
+  background: var(--clr-void);
+  color: var(--clr-silver);
+  font-family: var(--font-boot);
+  padding: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  z-index: 9999;
+}

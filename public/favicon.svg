@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- NACHTSCHLEIFE favicon: green flag / headlight icon, updates per flag status via JS -->
+  <rect width="32" height="32" fill="#050508"/>
+  <!-- Headlight lens -->
+  <ellipse cx="16" cy="16" rx="10" ry="10" fill="none" stroke="#e8f0ff" stroke-width="1.5" opacity="0.9"/>
+  <ellipse cx="16" cy="16" rx="5" ry="5" fill="#e8f0ff" opacity="0.8"/>
+  <ellipse cx="16" cy="16" rx="2" ry="2" fill="#ffffff"/>
+</svg>
